@@ -1,4 +1,5 @@
 import cv2
+import os
 import easygui  # to open the filebox
 import tkinter as tk
 from tkinter import *
@@ -49,9 +50,21 @@ def cartoonify(imagePath: str):
 
     for i, axe in enumerate(axes.flatten()):
         axe.imshow(images[i], cmap='gray')
-        
+
+    save1 = Button(top, text="Save cartoon image", command=lambda: save(imagePath, images[-1]), padx=30, pady=5)
+    save1.configure(background='#364156', foreground='white', font=('calibri', 10, 'bold'))
+    save1.pack(side=TOP, pady=50)
+
     plt.show()
 
+
+def save(imagePath: str, image: [[int]]):
+    new_name, extension = os.path.splitext(imagePath)
+    path = new_name + "_Cartoonified_Image" + extension
+
+    cv2.imwrite(path, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+    I = "Image saved" + " at " + path
+    tk.messagebox.showinfo(title=None, message=I)
 
 upload = Button(top, text="Cartoonify an Image", command=upload, padx=10, pady=5, background='#000000',
                 foreground='white', font=('calibri', 10, 'bold'))
