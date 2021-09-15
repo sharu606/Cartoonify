@@ -1,4 +1,5 @@
 import cv2
+import sys
 import os
 import easygui  # to open the filebox
 import tkinter as tk
@@ -23,6 +24,11 @@ def cartoonify(imagePath: str):
     # Step 1 -- Read the image
     image = cv2.cvtColor(image, cv2.COLOR_BGRA2RGB)
     images += cv2.resize(image, (1000, 1000)),
+
+    # confirm that image is chosen
+    if image is None:
+        print("Cannot find any image. Choose appropriate file")
+        sys.exit()
 
     # Step 2 -- Convert it into gray scale
     gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -65,6 +71,7 @@ def save(imagePath: str, image: [[int]]):
     cv2.imwrite(path, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
     I = "Image saved" + " at " + path
     tk.messagebox.showinfo(title=None, message=I)
+
 
 upload = Button(top, text="Cartoonify an Image", command=upload, padx=10, pady=5, background='#000000',
                 foreground='white', font=('calibri', 10, 'bold'))
